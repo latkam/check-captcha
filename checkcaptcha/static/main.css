@@ -1,0 +1,88 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 370px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+.checkcaptcha {
+    min-width: 250px;
+    min-height: 94px;
+    background-color: #dfdee0;
+    border-radius: 21px;
+    position: relative;
+    -webkit-box-shadow: 0 14px 16px -16px #222;
+    -moz-box-shadow: 0 14px 16px -16px #222;
+    box-shadow: 0 14px 16px -16px #222;
+    color: #615f5f;
+    padding: 5px;
+}
+
+.checkcaptcha.good {
+    background-color: #ecf1e8;
+}
+
+.checkcaptcha .clickable, .checkcaptcha-modal .clickable {
+    cursor: pointer;
+}
+
+.checkcaptcha-modal table {
+  width: 100%;
+}
+
+.checkcaptcha-modal img {
+  display: block; 
+  width: 100%; 
+  max-width: 100%;
+  height: auto;
+  padding: 6px;
+}
+
+.checkcaptcha-modal img.selected {
+  padding: 0;
+  border: 6px green solid;
+}
+
+.checkcaptcha-modal td {
+  padding: 5px;
+}
+
+.checkcaptcha-modal button.btn-primary {
+  display: block;
+  margin: 0 auto;
+  font-size: 1.6em;
+}
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CheckCaptcha</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap -->  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>    
+    <!-- Local -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+  <div class="text-center">
+    <form class="form-signin">
+      <img class="mb-4" src="{{ url_for('static', filename='logo_big.png') }}" alt="CheckCaptcha" width="200" height="200">
+      <h1 class="h3 mb-3 font-weight-normal">Download your treasure</h1>
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> I'm not a robot
+          
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block checkcaptcha-submit" type="submit">Download</button>
+      <p class="mt-5 mb-3 text-muted">What's all this?</p>
+      <div class="checkcaptcha">
+        <div class="clickable">
+          <input type="checkbox">
+          I'm not a robot
+        </div>
+        <div class="clickable">
+          <img class="logo" src="static/red.png" alt="Submit" width="45" height="60">
+        </div>
+      </div>
+      
+    </form>
+  </div>
+​<script>
+  $(document).ready(function() {
+    $('.checkcaptcha').click(function(event) {
+      if ($(this).hasClass('good')) {
+        return;
+      }
+      let user_token = 'karel'; /* @TODO - user token */
+
+      /* @TOOD - don't load if already loaded */
+      $.ajax({
+        url: '/api/generate/' + user_token,
+        type: 'GET',
+        success: function (data) {
+          $(data).appendTo('body').modal('show');
+        }
+      });
+    });
+    $('.checkcaptcha input[type="checkbox"]').change(function(event) {
+      if ($(this).hasClass('validated')) {
+          $(this).prop('checked', true);
+        } else {
+          $(this).prop('checked', false);
+        }
+        return true;
+      })
+    });
+    $('.checkcaptcha input[type="checkbox"]').prop('checked', false);
+    $('.checkcaptcha-submit').prop('disabled', true);
+  </script>
+  </body>
+</html>

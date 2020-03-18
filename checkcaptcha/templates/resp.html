@@ -1,0 +1,76 @@
+<div  class="modal fade checkcaptcha-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{ query }}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <table>
+                    {% for img in imgs %}
+                        {% if (loop.index - 1) % 3 == 0 %}
+                            <tr>
+                        {% endif %}
+                        <td>
+                            <img src="{{ img['path'] }}" data-id="{{ img['id_image'] }}" class="clickable">
+                        </td>
+                        {% if (loop.index - 1) % 3 == 3 %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>  
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Send</button>
+            </div>
+        <script>
+            $('.checkcaptcha-modal img').click(function() {
+                $(this).toggleClass('selected');
+            });
+            $('.checkcaptcha-modal button.btn-primary').click(function() {
+                this.blur(); // Manually remove focus from clicked link.
+                $(this).text('Sending...');
+                let answers = [];
+                $('.checkcaptcha-modal img').each(function(i, img) {
+                    if ($(img).hasClass('selected')) {
+                        answers.push($(img).data('id'));
+                    }
+                });
+                let main_div = $('.checkcaptcha');
+                $.ajax({
+                    url: "{{ url_for('captcha.captcha_answer', captcha_hash=captcha_hash) }}",
+                    type: 'POST',
+                    data: {'answers': answers},
+                    success: function (data) {
+                        console.log(data);
+                        if (data['correct']) {
+                            main_div.find('input').addClass('validated');
+                            main_div.find('input').prop('checked', true);
+                            main_div.find('input').prop('disabled', true);
+                            main_div.addClass('good');
+                            main_div.find('img.logo').attr('src', '{{ url_for("static", filename="green.png") }}');
+                            $('.checkcaptcha-submit').prop('disabled', false);
+                            $('.checkcaptcha-modal').modal('hide');
+                        } else {
+                            /* @TODO */
+                            $('checkcaptcha-send').text('Send');
+                            let user_token = 'karel';
+                            $.ajax({
+                              url: '/api/generate/' + user_token,
+                                type: 'GET',
+                                success: function (data) {
+                                      $('.checkcaptcha-modal').find('.modal-content').html($(data).find('.modal-content'));
+                                      // $(data).appendTo('body').modal('show');
+                                  }
+                            });
+                        } 
+                    }
+                });
+            });
+        </script>
+        </div>
+    </div>
+</div>
